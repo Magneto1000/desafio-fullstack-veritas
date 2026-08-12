@@ -7,7 +7,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   
-  // Novos estados para a edição
+  // Novos estados preparados para a edição
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState('');
 
@@ -67,17 +67,15 @@ function App() {
     fetchTasks();
   };
 
-  const renderColumn = (title, status) => {
+const renderColumn = (title, status) => {
     const columnTasks = tasks.filter((task) => task.status === status);
     
     return (
-      <div className="column">
+      <div className={`column column-${status.toLowerCase()}`}>
         <h2>{title}</h2>
         <div className="task-list">
           {columnTasks.map((task) => (
             <div key={task.id} className="task-card">
-              
-              {/* Modo de Edição vs Modo de Visualização */}
               {editingId === task.id ? (
                 <div className="edit-mode">
                   <input 
@@ -94,19 +92,16 @@ function App() {
                   <p>{task.title}</p>
                   <div className="task-actions">
                     {status !== 'TODO' && (
-                      <button onClick={() => moveTask(task.id, getPreviousStatus(status))}>{'<'}</button>
+                      <button onClick={() => moveTask(task.id, getPreviousStatus(status))}>{'⬅️'}</button>
                     )}
-                    
-                    <button onClick={() => startEditing(task)} style={{ backgroundColor: '#ff9900' }}>Editar</button>
-                    <button onClick={() => deleteTask(task.id)} className="delete-btn">X</button>
-                    
+                    <button onClick={() => startEditing(task)} style={{ backgroundColor: '#ff9900' }}>✏️</button>
+                    <button onClick={() => deleteTask(task.id)} className="delete-btn">🗑️</button> 
                     {status !== 'DONE' && (
-                      <button onClick={() => moveTask(task.id, getNextStatus(status))}>{'>'}</button>
+                      <button onClick={() => moveTask(task.id, getNextStatus(status))}>{'➡️'}</button>
                     )}
                   </div>
                 </>
               )}
-
             </div>
           ))}
         </div>
